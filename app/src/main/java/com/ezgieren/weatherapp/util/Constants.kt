@@ -8,4 +8,5 @@ object Constants {
     const val EMPTY = ""
     const val ERR_API = "API Error:"
     const val ERR_NETWORK = "Network Error: Please check your internet connection.:"
+    const val CITY_NAME = "The city name is not empty!"
 }

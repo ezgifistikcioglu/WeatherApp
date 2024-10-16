@@ -70,6 +70,9 @@ dependencies {
     // Coil (Image Loading)
     implementation (libs.coil.compose)
 
+    // OkHttp
+    implementation(libs.okhttp.logging.interceptor)
+    
     // Testing Libraries
     testImplementation (libs.junit)
     androidTestImplementation (libs.androidx.junit)
