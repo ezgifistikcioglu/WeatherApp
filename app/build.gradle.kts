@@ -16,9 +16,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // API key added in BuildConfig
+        buildConfigField("String", "WEATHER_API_KEY", "${project.properties["WEATHER_API_KEY"]}")
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 
