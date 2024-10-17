@@ -11,7 +11,6 @@ import javax.inject.Inject
 class GetWeatherByCityUseCase @Inject constructor(
     private val repository: WeatherRepository
 ){
-    //
     operator fun invoke(cityName: String) : Flow<Resource<WeatherInfo>>{
         if (cityName.isBlank()){
             return flowOf(Resource.Error(Constants.CITY_NAME))
