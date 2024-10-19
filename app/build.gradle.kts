@@ -53,6 +53,7 @@ dependencies {
     // Hilt
     implementation (libs.hilt.android)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     kapt (libs.hilt.compiler)
 
     // Retrofit & Gson
