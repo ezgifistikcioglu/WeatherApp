@@ -1,74 +1,71 @@
 package com.ezgieren.weatherapp.presentation.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ezgieren.weatherapp.presentation.ui.components.WeatherInfoCard
 import com.ezgieren.weatherapp.presentation.viewmodel.WeatherViewModel
 import com.ezgieren.weatherapp.util.Constants
-import com.ezgieren.weatherapp.util.paddingNormal
+import com.ezgieren.weatherapp.util.CustomButton
+import com.ezgieren.weatherapp.util.CustomTextField
 import com.ezgieren.weatherapp.util.paddingNormal2x
-import com.ezgieren.weatherapp.util.paddingSmall
 
 @Composable
 fun WeatherScreen(
-    viewModel: WeatherViewModel = hiltViewModel()  // Injecting ViewModel with Hilt
+    viewModel: WeatherViewModel = hiltViewModel()
 ) {
-    var city by remember { mutableStateOf(Constants.EMPTY) }  // keep the city name
+    var city by remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
 
     Column(
-        modifier = Modifier.paddingNormal2x(),
+        modifier = Modifier
+            .fillMaxSize()
+            .paddingNormal2x(),  // Padding extension
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // TextField for the city name
-        TextField(
+        CustomTextField(
             value = city,
             onValueChange = { city = it },
-            label = { Text(Constants.ENTER_CITY) },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Search
-            ),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    viewModel.getWeather(city)
-                }
-            )
+            onSearch = { viewModel.getWeather(city) }
         )
 
-        Spacer(modifier = Modifier.paddingSmall())
+        Spacer(modifier = Modifier.height(8.dp))
 
-        // Button to take weather data
-        Button(
+        CustomButton(
+            text = Constants.GET_WEATHER,
             onClick = { viewModel.getWeather(city) },
             modifier = Modifier.align(Alignment.End)
-        ) {
-            Text(Constants.GET_WEATHER)
-        }
+        )
 
-        Spacer(modifier = Modifier.paddingNormal())
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // We determine how the screen behaves depending on the situation
         when {
             state.isLoading -> {
                 CircularProgressIndicator()  // Loading state
             }
             state.weatherInfo != null -> {
-                // Card for displaying weather information
-                //WeatherInfoCard(state.weatherInfo!!)
+                WeatherInfoCard(state.weatherInfo!!)  // Weather Info Card
             }
             state.error.isNotEmpty() -> {
                 Text(
                     text = state.error,
-                    color = MaterialTheme.colors.error,
+                    color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }

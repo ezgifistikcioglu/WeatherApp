@@ -31,12 +31,14 @@ object AppPadding {
     val normalPadding = 8.dp
     val normal2xPadding = 16.dp
     val symmetricPadding = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    val largePadding = 50.dp
 }
 fun Modifier.paddingNormal() = this.padding(AppPadding.normalPadding)
 fun Modifier.paddingSmall() = this.padding(AppPadding.smallPadding)
 fun Modifier.paddingXSmall() = this.padding(AppPadding.xSmallPadding)
 fun Modifier.paddingNormal2x() = this.padding(AppPadding.normal2xPadding)
 fun Modifier.paddingSymmetric() = this.then(AppPadding.symmetricPadding)
+fun Modifier.largePadding() = this.padding(AppPadding.largePadding)
 
 //  An extension function for the TextField
 @Composable
@@ -50,7 +52,9 @@ fun CustomTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .paddingSymmetric(),  // Padding extension func.
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Search
         ),
@@ -69,7 +73,7 @@ fun CustomButton(
 ) {
     Button(
         onClick = { onClick() },
-        modifier = modifier
+        modifier = modifier.paddingSmall()
     ) {
         Text(text)
     }
